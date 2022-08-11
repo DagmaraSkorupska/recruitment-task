@@ -1,0 +1,64 @@
+<div>
+  <form [formGroup]="offerForm">
+    <p>Name</p>
+    <input
+      pInputText
+      type="text"
+      class="text-input"
+      formControlName="title">
+
+    <p>Category</p>
+    <input
+      pInputText
+      type="text"
+      class="text-input"
+      formControlName="category_name">
+
+    <p >Category number</p>
+    <input
+
+      pInputText
+      type="number"
+      class="text-input"
+      formControlName="category">
+
+    <p>Description</p>
+    <textarea
+      pInputTextarea
+      type="text"
+      class="text-input"
+      formControlName="description">
+    </textarea>
+
+    <p>Price</p>
+    <input
+      pInputText
+      type="text"
+      class="text-input"
+      formControlName="price">
+
+    <div *ngIf="!newOffer">
+    <p>Date</p>
+    <input
+      pInputText
+      type="text"
+      class="text-input"
+      formControlName="created_at">
+    </div>
+  </form>
+  <br>
+  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
+                   rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+  <button
+          pButton
+          class="p-button-success btn pointer button-save"
+          label="Save"
+          (click)="save()">
+  </button>
+  <button pButton
+          class="p-button-danger btn pointer"
+          [label]="(newOffer ? 'Cancel' : 'Delete')"
+          (click)="cancel(offer.id!)">
+  </button>
+</div>
+

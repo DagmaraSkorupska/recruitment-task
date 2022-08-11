@@ -1,80 +1,96 @@
-<p-table
-  #dt
-  [value]="offers!"
-  dataKey="id"
-  styleClass="p-datatable-customers"
-  [rowHover]="true"
-  [rows]="10"
-  [showCurrentPageReport]="true"
-  responsiveLayout="scroll"
-  [paginator]="true"
-  [filterDelay]="0"
-  [globalFilterFields]="['category_name']">
-  <ng-template pTemplate="caption">
-    <div class="table-header">
-      List of offers
-      <span class="p-input-icon-left">
+<div *ngIf="!offer">
+  <p-table
+    #dt
+    [value]="offers!"
+    dataKey="id"
+    styleClass="p-datatable-customers"
+    [rowHover]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    responsiveLayout="scroll"
+    [paginator]="true"
+    [filterDelay]="0"
+    [globalFilterFields]="['category_name']">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        List of offers
+        <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text"
                        (input)="applyFilterGlobal($event, 'contains')"
                        placeholder="Search for category"/>
       </span>
-      <span class="p-input-icon-left">
-        <button pButton pRipple type="button" label="Add new offer" icon="pi pi-plus" class="p-button-secondary"></button>
+        <span class="p-input-icon-left">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="Add new offer"
+          icon="pi pi-plus"
+          class="p-button-secondary"
+          (click)="createNewOffer()"></button>
       </span>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-    <tr>
-      <th>
-        <div class="flex justify-content-between align-items-center">
-          Name
-        </div>
-      </th>
-      <th>
-        <div class="flex justify-content-between align-items-center">
-          Category
-        </div>
-      </th><th>
-      <div class="flex justify-content-between align-items-center">
-        Price
       </div>
-    </th>
-      <th>
-        <div class="flex justify-content-between align-items-center">
-          Description
-        </div>
-      </th>
-      <th></th>
-  </ng-template>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"></th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Description</th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-offer>
-    <tr class="p-selectable-row">
-      <td>
-        <span class="p-column-title">Name</span>
-        {{offer.title}}
-      </td>
-      <td>
-        <span class="p-column-title">Category</span>
-        {{offer.category_name}}
-      </td>
-      <td>
-        <span class="p-column-title">Price</span>
-        {{offer.price}}
-      </td>
-      <td>
-        <span class="p-column-title">Description</span>
-        {{offer.description}}
-      </td>
+    <ng-template pTemplate="body" let-offer let-expanded="expanded">
+      <tr class="p-selectable-row">
+        <td>
+          <button type="button" pButton pRipple [pRowToggler]="offer"
+                  class="p-button-text p-button-rounded p-button-plain"
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+        </td>
+        <td>
+          <span class="p-column-title">Name</span>
+          {{offer.title}}
+        </td>
+        <td>
+          <span class="p-column-title">Category</span>
+          {{offer.category_name}}
+        </td>
+        <td>
+          <span class="p-column-title">Price</span>
+          {{offer.price}}
+        </td>
+        <td>
+          <span class="p-column-title">Description</span>
+          {{offer.description}}
+        </td>
+      </tr>
+    </ng-template>
 
-      <td style="text-align: center">
-        <button pButton type="button" class="p-button-secondary" icon="pi pi-pencil"></button>
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="8">No offers found.</td>
-    </tr>
-  </ng-template>
-</p-table>
+    <ng-template pTemplate="rowexpansion" let-offer>
+      <tr>
+        <td class="primeng-table__edit-row-padding" colspan="7">
+          <app-offers-edit
+            #editComponent
+            *ngIf="offer"
+            [offer]="offer"
+            [newOffer]="false">
+          </app-offers-edit>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No offers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-offers-edit
+  *ngIf="offer"
+  (cancelEvent)="cancelNewOffers()"
+  [offer]="offer"
+  [newOffer]="true">
+</app-offers-edit>
