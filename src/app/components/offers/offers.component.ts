@@ -22,7 +22,6 @@ export class OffersComponent implements OnInit {
 
   getAll() {
     this.offersService.getAllOffers().pipe(take(1)).subscribe(result => {
-
       this.offers = result;
     });
   }

@@ -72,7 +72,6 @@
       <tr>
         <td class="primeng-table__edit-row-padding" colspan="7">
           <app-offers-edit
-            #editComponent
             *ngIf="offer"
             [offer]="offer"
             [newOffer]="false">
@@ -88,9 +87,12 @@
     </ng-template>
   </p-table>
 </div>
-<app-offers-edit
-  *ngIf="offer"
-  (cancelEvent)="cancelNewOffers()"
-  [offer]="offer"
-  [newOffer]="true">
-</app-offers-edit>
+<div class="primeng-table__edit-row-padding">
+  <app-offers-edit
+    *ngIf="offer"
+    (cancelEvent)="cancelNewOffers()"
+    [offer]="offer"
+    [newOffer]="true">
+  </app-offers-edit>
+</div>
+

@@ -21,9 +21,6 @@ export class OffersEditComponent implements OnInit {
   public offerForm!: FormGroup;
   public disabled = true;
 
-  public category: any[] = [];
-
-
   constructor(private fb: FormBuilder,
               private router: Router,
               private location: Location,
@@ -34,25 +31,22 @@ export class OffersEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.offerForm = this.fb.group({
-      category: [this.offer.category, Validators.required],
+      category: [this.offer.category, [Validators.required, Validators.min(1), Validators.max(5)]],
       category_name: [{value: this.offer.category_name, disabled: true}],
-      // title: [{value: this.offer.title, disabled: true}],
-      title: [this.offer.title, Validators.maxLength(150)],
-      description: [this.offer.description],
+      title: [this.offer.title, [Validators.required, Validators.maxLength(150)]],
+      description: [this.offer.description, Validators.required],
       price: [this.offer.price, [Validators.required, Validators.min(0.01)]],
       created_at: [{value: this.offer.created_at, disabled: true}]
     });
-    this.offersService.getAllCategory().pipe(take(1)).subscribe(result => this.category = result);
   }
 
   save() {
     this.offer = {...this.offer, ...this.offerForm.value};
     if (this.newOffer) {
-      this.offersService.postOffer(this.offer).subscribe(() => console.log('new Offer'));
+      this.offersService.postOffer(this.offer).pipe(take(1)).subscribe(() => this.refresh());
     } else {
-      this.offersService.putOffer(this.offer, this.offer.id).subscribe(() => console.log('update Offer'));
+      this.offersService.putOffer(this.offer, this.offer.id).pipe(take(1)).subscribe(() => this.refresh());
     }
-    this.cancelEvent.emit();
   }
 
   cancel(id: number) {
@@ -69,8 +63,8 @@ export class OffersEditComponent implements OnInit {
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.offersService.deleteOffers(id).subscribe(() => console.log('deleted'));
-        this.cancelEvent.emit();
+        this.offersService.deleteOffers(id).pipe(take(1)).subscribe(() =>
+        this.refresh());
       },
       reject: (type: any) => {
         switch (type) {
@@ -82,7 +76,11 @@ export class OffersEditComponent implements OnInit {
             break;
         }
       }
-    });
+    })
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 }
 
