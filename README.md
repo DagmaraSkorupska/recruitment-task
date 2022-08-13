@@ -1,5 +1,7 @@
 # AgralanRecruitmentTask
 
+Live pages: https://agralan-recruitment-task.web.app/
+
 * [About project](#about-project)
 * [How to start](#how-to-start)
 * [Tech stack](#tech-stack)
@@ -14,6 +16,8 @@ The app will be a portal with advertisements.
 
 - Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. 
 The application will automatically reload if you change any of the source files.
+
+- 
 
 ## Tech stack
 
